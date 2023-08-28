@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Counter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Real-Time Counter</h1>
+    <div id="counter-container">Loading...</div>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('counter_update', data => {
+            const counterContainer = document.getElementById('counter-container');
+            counterContainer.innerHTML = `Counter: ${data.data}`;
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+    </script>
+</body>
+</html>
